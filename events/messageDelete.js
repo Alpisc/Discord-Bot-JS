@@ -19,7 +19,7 @@ module.exports = {
             { name: "Deleted", value: before.cleanContent, inline: false }
         );
         
-		client.channels.fetch(editedLogsChannelId)
+		client.channels.fetch(deletedLogsChannelId)
         .then(channel => channel.send(embed));
 	}
 };
