@@ -20,7 +20,7 @@ module.exports = {
         .addFields(
             { name: "Before", value: before.cleanContent, inline: false },
             { name: "After", value: after.cleanContent, inline: false }
-        )
+        );
         
 		client.channels.fetch(editedLogsChannelId)
         .then(channel => channel.send(embed));

@@ -17,7 +17,7 @@ module.exports = {
         .setThumbnail(before.author.avatarURL())
         .addFields(
             { name: "Deleted", value: before.cleanContent, inline: false }
-        )
+        );
         
 		client.channels.fetch(editedLogsChannelId)
         .then(channel => channel.send(embed));
