@@ -11,7 +11,7 @@ module.exports = {
         if(before == after) return;
 
         let embed = new EmbedBuilder()
-        .setTitle(`Message edited in ${after.channel.mention}`)
+        .setTitle(`Message edited in ${after.channel.name}`)
         .setTimestamp(after.createdTimestamp)
         .setAuthor({ name: after.author.tag, iconURL: after.author.avatarURL() })
         .setURL(after.url)
