@@ -8,7 +8,7 @@ const { editedLogsChannelId } = process.env;
 module.exports = {
 	name: Events.MessageUpdate,
 	async execute(before, after) {
-        if(before == after) return;
+        if(before.cleanContent == after.cleanContent) return;
 
         let embed = new EmbedBuilder()
         .setTitle(`Message edited in ${after.channel}`)
