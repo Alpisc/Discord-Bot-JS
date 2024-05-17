@@ -6,7 +6,13 @@ const dotenv = require('dotenv');
 dotenv.config();
 const { token } = process.env;
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ]
+});
 
 client.commands = new Collection();
 
