@@ -1,5 +1,4 @@
 const { Events } = require('discord.js');
-const { client } = require('../index.js')
 
 const dotenv = require('dotenv');
 
@@ -9,7 +8,8 @@ const { welcomeChannelId } = process.env;
 module.exports = {
 	name: Events.guildMemberRemove,
 	execute(member) {
-		client.channels.fetch(welcomeChannelId)
+		let client = member.client;
+		client.channels.fetch(parseInt(welcomeChannelId))
         .then(channel => channel.send(`${member.mention} has left the server. Goodbye!`));
 	}
 };

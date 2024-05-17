@@ -1,5 +1,4 @@
 const { Events, EmbedBuilder  } = require('discord.js');
-const { client } = require('../index.js')
 
 const dotenv = require('dotenv');
 
@@ -19,6 +18,8 @@ module.exports = {
             { name: "Deleted", value: before.cleanContent, inline: false }
         );
         
+        let client = before.client;
+
 		client.channels.fetch(deletedLogsChannelId)
         .then(channel => channel.send(embed));
 	}

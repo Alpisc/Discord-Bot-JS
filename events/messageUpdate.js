@@ -1,5 +1,4 @@
 const { Events, EmbedBuilder  } = require('discord.js');
-const { client } = require('../index.js')
 
 const dotenv = require('dotenv');
 
@@ -21,7 +20,9 @@ module.exports = {
             { name: "Before", value: before.cleanContent, inline: false },
             { name: "After", value: after.cleanContent, inline: false }
         );
-        
+
+        let client = before.client;
+
 		client.channels.fetch(editedLogsChannelId)
         .then(channel => channel.send(embed));
 	}
