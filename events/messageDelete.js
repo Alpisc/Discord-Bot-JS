@@ -6,7 +6,7 @@ dotenv.config();
 const { deletedLogsChannelId } = process.env;
 
 module.exports = {
-	name: Events.MessageUpdate,
+	name: Events.MessageDelete,
 	execute(before) {
         let embed = new EmbedBuilder()
         .setTitle(`Message deleted in ${before.channel.mention}`)
