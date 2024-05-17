@@ -10,6 +10,6 @@ module.exports = {
 	async execute(member) {
 		let client = member.client;
 		await client.channels.fetch(parseInt(welcomeChannelId))
-        .then(channel => channel.send(`${member.mention} has left the server. Goodbye!`));
+        .then(channel => channel.send(`${member} has left the server. Goodbye!`));
 	}
 };

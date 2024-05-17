@@ -10,7 +10,7 @@ module.exports = {
 	async execute(member) {
 		let client = member.client;
 		await client.channels.fetch(paresInt(welcomeChannelId))
-        .then(channel => channel.send(`Welcome to the server ${member.mention}! Make sure to read the <#${ruleChannelId}> and have fun!`));
+        .then(channel => channel.send(`Welcome to the server ${member}! Make sure to read the <#${ruleChannelId}> and have fun!`));
         member.roles.add(parseInt(userRoleId));
 	}
 };
