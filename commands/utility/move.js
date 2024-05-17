@@ -48,6 +48,6 @@ module.exports = {
                 }
             });
         
-            await interaction.reply(`Moved ${counter} users from <#${from.id}> to <#${to.id}>`);
+            await interaction.reply({content: `Moved ${counter} users from <#${from.id}> to <#${to.id}>` });
         },
 };
