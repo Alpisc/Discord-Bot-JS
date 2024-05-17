@@ -6,10 +6,10 @@ dotenv.config();
 const { welcomeChannelId } = process.env;
 
 module.exports = {
-	name: Events.guildMemberRemove,
-	execute(member) {
+	name: Events.GuildMemberRemove,
+	async execute(member) {
 		let client = member.client;
-		client.channels.fetch(parseInt(welcomeChannelId))
+		await client.channels.fetch(parseInt(welcomeChannelId))
         .then(channel => channel.send(`${member.mention} has left the server. Goodbye!`));
 	}
 };

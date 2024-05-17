@@ -7,15 +7,14 @@ const { editedLogsChannelId } = process.env;
 
 module.exports = {
 	name: Events.MessageUpdate,
-	execute(before, after) {
+	async execute(before, after) {
         if(before == after) return;
 
         let embed = new EmbedBuilder()
-        .setTitle(`Message edited in ${before.channel.mention}`)
+        .setTitle(`Message edited in ${after.channel.mention}`)
         .setTimestamp(after.createdTimestamp)
-        .setAuthor(before.author)
+        .setAuthor({ name: after.author.tag, iconURL: after.author.avatarURL() })
         .setURL(after.url)
-        .setThumbnail(before.author.avatarURL())
         .addFields(
             { name: "Before", value: before.cleanContent, inline: false },
             { name: "After", value: after.cleanContent, inline: false }
@@ -23,7 +22,7 @@ module.exports = {
 
         let client = before.client;
 
-		client.channels.fetch(editedLogsChannelId)
-        .then(channel => channel.send(embed));
+		await client.channels.fetch(editedLogsChannelId)
+        .then(channel => channel.send({ embeds: [embed] }));
 	}
 };
