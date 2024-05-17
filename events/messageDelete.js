@@ -9,7 +9,7 @@ module.exports = {
 	name: Events.MessageDelete,
 	async execute(before) {
         let embed = new EmbedBuilder()
-        .setTitle(`Message deleted in #${before.channel.name}`)
+        .setTitle(`Message deleted in ${before.channel}`)
         .setURL(before.url)
         .setTimestamp(before.createdTimestamp)
         .setAuthor({ name: before.author.tag, iconURL: before.author.avatarURL() })
