@@ -8,8 +8,12 @@ const { welcomeChannelId } = process.env;
 module.exports = {
 	name: Events.GuildMemberRemove,
 	async execute(member) {
-		let client = member.client;
-		await client.channels.fetch(parseInt(welcomeChannelId))
-        .then(channel => channel.send(`${member} has left the server. Goodbye!`));
+		try {
+			let client = member.client;
+			await client.channels.fetch(parseInt(welcomeChannelId))
+			.then(channel => channel.send(`${member} has left the server. Goodbye!`));
+		} catch (error) {
+			console.error(error);
+		}
 	}
 };
