@@ -1,14 +1,13 @@
 const { Events, EmbedBuilder  } = require('discord.js');
 
 const dotenv = require('dotenv');
-
 dotenv.config();
 const { deletedLogsChannelId } = process.env;
 
 module.exports = {
-	name: Events.MessageDelete,
-	async execute(before) {
-        let embed = new EmbedBuilder()
+    name: Events.MessageDelete,
+    async execute(before) {
+        const embed = new EmbedBuilder()
         .setTitle(`Message deleted in ${before.channel}`)
         .setURL(before.url)
         .setTimestamp(before.createdTimestamp)
@@ -16,10 +15,9 @@ module.exports = {
         .addFields(
             { name: "Deleted:", value: before.cleanContent || "No content", inline: false }
         );
-        
-        let client = before.client;
+        const client = before.client;
+        const channel = await client.channels.fetch(deletedLogsChannelId);
 
-		await client.channels.fetch(deletedLogsChannelId)
-        .then(channel => channel.send({ embeds: [embed] }));
-	}
+        await channel.send({ embeds: [embed] });
+    }
 };

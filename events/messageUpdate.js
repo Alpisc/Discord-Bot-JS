@@ -10,7 +10,7 @@ module.exports = {
 	async execute(before, after) {
         if(before.cleanContent == after.cleanContent) return;
 
-        let embed = new EmbedBuilder()
+        const embed = new EmbedBuilder()
         .setTitle(`Message edited in ${after.channel}`)
         .setTimestamp(after.createdTimestamp)
         .setAuthor({ name: after.author.tag, iconURL: after.author.avatarURL() })
@@ -19,10 +19,9 @@ module.exports = {
             { name: "Before", value: before.cleanContent, inline: false },
             { name: "After", value: after.cleanContent, inline: false }
         );
+        const client = before.client;
+        const channel = await client.channels.fetch(editedLogsChannelId);
 
-        let client = before.client;
-
-		await client.channels.fetch(editedLogsChannelId)
-        .then(channel => channel.send({ embeds: [embed] }));
+		await channel.send({ embeds: [embed] });
 	}
 };
