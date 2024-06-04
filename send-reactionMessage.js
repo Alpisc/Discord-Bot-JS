@@ -12,7 +12,7 @@ const client = new Client({ intents: [
 
 client.on("ready", async (client) => {
   try {
-    const channel = await client.channels.cache.get("reactionChannelID");
+    const channel = await client.channels.cache.get(process.env.reactionChannelId);
     if (!channel) return;
 
     const row = new ActionRowBuilder();
