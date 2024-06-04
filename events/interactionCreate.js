@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Events } = require('discord.js');
 
 module.exports = {
@@ -17,9 +18,13 @@ module.exports = {
 			if (interaction.member.roles.cache.has(role.id)) {
 				await interaction.member.roles.remove(role);
 				await interaction.editReply({ content: `${role} removed` });
+				const channel = await interaction.client.channels.fetch(process.env.reactionChannelLogId);
+				await channel.send(`${interaction.user} removed ${role}`)
 			} else {
 				await interaction.member.roles.add(role)
 				await interaction.editReply({ content: `${role} added` });
+				const channel = await interaction.client.channels.fetch(process.env.reactionChannelLogId);
+				await channel.send(`${interaction.user} added ${role}`);
 			}
 			return;
 		}
