@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const { Client, IntentsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const roles = require("./roles.json")
 
 const client = new Client({ intents: [
     IntentsBitField.Flags.Guilds,
@@ -8,13 +9,6 @@ const client = new Client({ intents: [
     IntentsBitField.Flags.MessageContent,
     IntentsBitField.Flags.GuildMembers
 ] });
-
-const roles = [
-    {
-        id: "dummyID",
-        label: "dummyLabel"
-    }
-];
 
 client.on("ready", async (client) => {
   try {
