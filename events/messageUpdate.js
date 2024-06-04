@@ -1,9 +1,5 @@
+require('dotenv').config();
 const { Events, EmbedBuilder  } = require('discord.js');
-
-const dotenv = require('dotenv');
-
-dotenv.config();
-const { editedLogsChannelId } = process.env;
 
 module.exports = {
 	name: Events.MessageUpdate,
@@ -20,7 +16,7 @@ module.exports = {
             { name: "After", value: after.cleanContent, inline: false }
         );
         const client = before.client;
-        const channel = await client.channels.fetch(editedLogsChannelId);
+        const channel = await client.channels.fetch(process.env.editedLogsChannelId);
 
 		await channel.send({ embeds: [embed] });
 	}
