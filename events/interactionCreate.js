@@ -5,28 +5,23 @@ module.exports = {
 	async execute(interaction) {
 		// Role claim button(s)
 		if (interaction.isButton()) {
-			try {
-				await interaction.deferReply({ ephemeral: true });
+			await interaction.deferReply({ ephemeral: true });
 
-				const role = interaction.guild.roles.cache.get(interaction.customId)
+			const role = interaction.guild.roles.cache.get(interaction.customId)
 
-				if (!role) {
-					await interaction.editReply({ content: "Role not found" });
-					return;
-				};
-
-				if (interaction.member.roles.cache.has(role.id)) {
-					await interaction.member.roles.remove(role);
-					await interaction.editReply({ content: `${role} removed` });
-				} else {
-					await interaction.member.roles.add(role)
-					await interaction.editReply({ content: `${role} added` });
-				}
+			if (!role) {
+				await interaction.editReply({ content: "Role not found" });
 				return;
+			};
+
+			if (interaction.member.roles.cache.has(role.id)) {
+				await interaction.member.roles.remove(role);
+				await interaction.editReply({ content: `${role} removed` });
+			} else {
+				await interaction.member.roles.add(role)
+				await interaction.editReply({ content: `${role} added` });
 			}
-			catch (error) {
-				console.log(error)
-			}
+			return;
 		}
 
 		if (!interaction.isChatInputCommand()) return;
