@@ -3,6 +3,32 @@ const { Events } = require('discord.js');
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
+		// Role claim button(s)
+		if (interaction.isButton()) {
+			try {
+				await interaction.deferReply({ ephemeral: true });
+
+				const role = interaction.guild.roles.cache.get(interaction.customId)
+
+				if (!role) {
+					await interaction.editReply({ content: "Role not found" });
+					return;
+				};
+
+				if (interaction.member.roles.cache.has(role.id)) {
+					await interaction.member.roles.remove(role);
+					await interaction.editReply({ content: `${role} removed` });
+				} else {
+					await interaction.member.roles.add(role)
+					await interaction.editReply({ content: `${role} added` });
+				}
+				return;
+			}
+			catch (error) {
+				console.log(error)
+			}
+		}
+
 		if (!interaction.isChatInputCommand()) return;
 
 		const command = interaction.client.commands.get(interaction.commandName);
