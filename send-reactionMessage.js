@@ -18,7 +18,7 @@ const roles = [
 
 client.on("ready", async (client) => {
   try {
-    const channel = await client.channels.cache.get(process.env.reactionChannel);
+    const channel = await client.channels.cache.get("reactionChannelID");
     if (!channel) return;
 
     const row = new ActionRowBuilder();
