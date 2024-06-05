@@ -12,6 +12,7 @@ const client = new Client({ intents: [
 
 client.on("ready", async (client) => {
   try {
+    await client.user.setPresence({ activities: [{ name: 'You', type: ActivityType.Watching }], status: 'dnd' });
     const channel = await client.channels.cache.get(process.env.reactionChannelId);
     if (!channel) return;
 
