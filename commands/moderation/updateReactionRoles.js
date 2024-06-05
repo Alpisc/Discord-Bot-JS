@@ -6,6 +6,7 @@ module.exports = {
 		.setDescription('Updates the reaction roles')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
+        await interaction.deferReply();
         const channel = await interaction.client.channels.cache.get(process.env.reactionChannelId);
         if (!channel) return;
 

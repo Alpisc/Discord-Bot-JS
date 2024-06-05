@@ -20,6 +20,7 @@ module.exports = {
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MoveMembers),
         async execute(interaction) {
+            await interaction.deferReply();
             const from = interaction.options.getChannel('from');
             const to = interaction.options.getChannel('to');
         
