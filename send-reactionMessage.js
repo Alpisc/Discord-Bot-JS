@@ -15,15 +15,22 @@ client.on("ready", async (client) => {
     const channel = await client.channels.cache.get(process.env.reactionChannelId);
     if (!channel) return;
 
-    const row = new ActionRowBuilder();
+    const rows = [];
+    let row = new ActionRowBuilder();
 
-    roles.forEach((role) => {
-        row.components.push(
+    roles.forEach((role, index) => {
+        if (index % 5 === 0 && index !== 0) { // Every 5 entries, start a new row
+            rows.push(row);
+            row = new ActionRowBuilder();
+        }
+        row.addComponents(
             new ButtonBuilder().setCustomId(role.id).setLabel(role.label).setStyle(ButtonStyle.Primary)
         );
     });
 
-    await channel.send({ content: "Claim or remove a role", components: [row] });
+    rows.push(row); // Push the last row even if it's not full
+
+    await channel.send({ content: "Claim or remove a role", components: rows });
 
     process.exit()
 
