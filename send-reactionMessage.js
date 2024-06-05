@@ -30,10 +30,8 @@ client.on("ready", async (client) => {
 
     rows.push(row); // Push the last row even if it's not full
 
-    await channel.messages.fetch({ limit: 1 }).then(messages => {
-      const mostRecentMessage = messages.array().pop();
-      mostRecentMessage.delete();
-    });
+    const lastMessage = channel.lastMessage;
+    lastMessage.delete();
 
     await channel.send({ content: "Claim or remove a role", components: rows });
 
