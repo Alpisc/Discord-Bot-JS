@@ -4,6 +4,7 @@ const { Events, EmbedBuilder  } = require('discord.js');
 module.exports = {
     name: Events.MessageDelete,
     async execute(before) {
+        if (before.author == before.client.user) return;
         const embed = new EmbedBuilder()
         .setTitle(`Message deleted in ${before.channel}`)
         .setURL(before.url)
