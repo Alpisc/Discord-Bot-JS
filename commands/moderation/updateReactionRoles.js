@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription('Updates the reaction roles')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
-        const channel = await client.channels.cache.get(process.env.reactionChannelId);
+        const channel = await interaction.client.channels.cache.get(process.env.reactionChannelId);
         if (!channel) return;
     
         const rows = [];
@@ -28,5 +28,6 @@ module.exports = {
         await channel.bulkDelete(1);
     
         await channel.send({ content: "Claim or remove a role", components: rows });
+        await interaction.reply({ content: "Updated reaction roles", ephemeral: true });
     }
 };
