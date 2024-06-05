@@ -30,7 +30,7 @@ client.on("ready", async (client) => {
 
     rows.push(row); // Push the last row even if it's not full
 
-    await channel.lastMessage.delete();
+    await channel.bulkDelete(1);
 
     await channel.send({ content: "Claim or remove a role", components: rows });
 
