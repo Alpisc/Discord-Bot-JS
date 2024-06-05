@@ -19,12 +19,12 @@ module.exports = {
 				await interaction.member.roles.remove(role);
 				await interaction.editReply({ content: `${role} removed` });
 				const channel = await interaction.client.channels.fetch(process.env.reactionChannelLogId);
-				await channel.send(`${interaction.user} removed ${role}`)
+				await channel.send(`${interaction.user} removed \`${role.name}\``)
 			} else {
 				await interaction.member.roles.add(role)
 				await interaction.editReply({ content: `${role} added` });
 				const channel = await interaction.client.channels.fetch(process.env.reactionChannelLogId);
-				await channel.send(`${interaction.user} added ${role}`);
+				await channel.send(`${interaction.user} added \`${role.name}\``);
 			}
 			return;
 		}
