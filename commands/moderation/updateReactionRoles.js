@@ -30,6 +30,5 @@ module.exports = {
         await channel.bulkDelete(1);
     
         await channel.send({ content: "Claim or remove a role", components: rows });
-        await interaction.reply({ content: "Updated reaction roles" });
     }
 };
