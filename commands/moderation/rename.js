@@ -24,7 +24,7 @@ module.exports = {
         const member = interaction.client.users.cache.get(user.id)
         const nickname = interaction.options.getString("nickname");
 
-        await user.edit({nick: nickname});
+        await member.edit({nick: nickname});
         await interaction.reply({content: `Muted ${user}.`});
     }
 };
