@@ -21,10 +21,10 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames),
 	async execute(interaction) {
         const user = interaction.options.getUser("user");
-        const member = interaction.client.users.cache.get(user.id)
+        const member = await interaction.guild.members.fetch(user.id);
         const nickname = interaction.options.getString("nickname");
 
-        await member.edit({nick: nickname});
-        await interaction.reply({content: `Muted ${user}.`});
+        await member.setNickname(nickname);
+        await interaction.reply({content: `Nickname changed for ${user}.`});
     }
 };
