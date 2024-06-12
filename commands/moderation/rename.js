@@ -7,7 +7,7 @@ module.exports = {
         .addUserOption(option =>
             option
                 .setName("user")
-                .setDescription("Who do you want to mute")
+                .setDescription("Select the user to rename")
                 .setRequired(true)
         )
         .addStringOption(option =>
@@ -16,15 +16,22 @@ module.exports = {
             .setDescription("Nickname you want to set")
             .setMinLength(1)
             .setMaxLength(32)
-            .setRequired(true)
+            .setRequired(false) // Make nickname not required
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames),
 	async execute(interaction) {
         const user = interaction.options.getUser("user");
         const member = await interaction.guild.members.fetch(user.id);
-        const nickname = interaction.options.getString("nickname");
+        let nickname = interaction.options.getString("nickname");
+
+        // Check if nickname is null or empty
+        if (!nickname || nickname.trim() === "") {
+            nickname = user.username;
+        }
 
         await member.setNickname(nickname);
         await interaction.reply({content: `Nickname changed for ${user}.`});
     }
 };
+
+
