@@ -55,8 +55,8 @@ module.exports = {
 
 
         const roleObject = await interaction.guild.roles.fetch(role.id);
-        await interaction.editReply({ embeds: [embed], components: [row] });
         await interaction.channel.send({ content: `${roleObject}` })
+        await interaction.editReply({ embeds: [embed], components: [row] });
 
         const filter = i => i.customId === 'click';
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 600000 });
