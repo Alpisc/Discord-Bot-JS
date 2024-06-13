@@ -17,7 +17,7 @@ module.exports = {
             .setRequired(true)
         ),
     async execute(interaction) {
-        await interaction.deferReply();
+        await interaction.deferReply({ ephemeral: true });
         const game = interaction.options.getString("game");
         const neededPlayers = interaction.options.getInteger("amount");
 
@@ -28,7 +28,7 @@ module.exports = {
 
         const role = roles.find(role => role.label === game);
         if (!role) {
-            await interaction.editReply({ content: `The game "${game}" is not available. Please choose another game.`, ephemeral: true });
+            await interaction.editReply({ content: `The game "${game}" is not available. Please choose another game.` });
             return;
         }
 
@@ -49,7 +49,7 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(button);
 
-        await interaction.editReply({ embeds: [embed], components: [row] });
+        await interaction.reply({ embeds: [embed], components: [row] });
 
         const filter = i => i.customId === 'click';
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
