@@ -58,7 +58,7 @@ module.exports = {
         await interaction.editReply({ content: `${roleObject}`, embeds: [embed], components: [row] });
 
         const filter = i => i.customId === 'click';
-        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
+        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 600000 });
 
         collector.on('collect', async i => {
             if (users.has(i.user.id)) {
