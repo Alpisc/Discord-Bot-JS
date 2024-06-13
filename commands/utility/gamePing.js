@@ -49,7 +49,7 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(button);
 
-        await interaction.reply({ embeds: [embed], components: [row] });
+        await interaction.editReply({ embeds: [embed], components: [row] });
 
         const filter = i => i.customId === 'click';
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
