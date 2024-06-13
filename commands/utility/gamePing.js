@@ -31,6 +31,10 @@ module.exports = {
             await interaction.editReply({ content: `The game "${game}" is not available. Please choose another game.` });
             return;
         }
+        if(counter <= 1){
+            await interaction.editReply({ content: "You need to be looking for more than one person" });
+            return;
+        }
 
         // first player is being added
         counter++;
