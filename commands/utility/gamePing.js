@@ -53,7 +53,9 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(button);
 
-        await interaction.editReply({ content: `<@&${role.id}>`, embeds: [embed], components: [row] });
+
+        const roleObject = await interaction.guild.roles.fetch(role.id);
+        await interaction.editReply({ content: `${roleObject}`, embeds: [embed], components: [row] });
 
         const filter = i => i.customId === 'click';
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
