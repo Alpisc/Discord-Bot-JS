@@ -4,7 +4,7 @@ const { Events, EmbedBuilder  } = require('discord.js');
 module.exports = {
 	name: Events.MessageUpdate,
 	async execute(before, after) {
-        if(before.cleanContent == after.cleanContent || before.author == before.client.user) return;
+        if(before.cleanContent == after.cleanContent || before.author.id == before.client.user.id || before.author.bot) return;
 
         const embed = new EmbedBuilder()
         .setTitle(`Message edited in ${after.channel}`)
