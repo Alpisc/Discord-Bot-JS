@@ -70,7 +70,7 @@ module.exports = {
 
             await i.update({ embeds: [newEmbed], components: [row] });
 
-            if (counter === 5) {
+            if (counter === neededPlayers) {
                 const userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
                 await interaction.followUp(`Enough players want to play ${role.label}!: ${userMentions}`);
                 collector.stop();
