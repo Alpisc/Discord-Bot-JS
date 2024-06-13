@@ -71,12 +71,6 @@ module.exports = {
                 counter++;
                 users.add(i.user.id);
             }
-            
-            if(counter <= 0){
-                await interaction.followUp(`Enough players want to play \`${role.label}\`!: ${userMentions}`);
-                collector.stop();
-                return;
-            }
 
             userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
 
@@ -90,6 +84,11 @@ module.exports = {
             if (counter >= neededPlayers) {
                 collector.stop();
                 return;
+            }
+
+            if(counter > 0){
+                await interaction.followUp(`Enough players want to play \`${role.label}\`!: ${userMentions}`);
+                collector.stop();
             }
         });
 
