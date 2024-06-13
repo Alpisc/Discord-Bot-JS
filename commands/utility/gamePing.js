@@ -17,7 +17,7 @@ module.exports = {
             .setRequired(true)
         ),
     async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply();
         const game = interaction.options.getString("game");
         const neededPlayers = interaction.options.getInteger("amount");
 
@@ -28,7 +28,7 @@ module.exports = {
 
         const role = roles.find(role => role.label === game);
         if (!role) {
-            await interaction.editReply({ content: `The game "${game}" is not available. Please choose another game.` });
+            await interaction.editReply({ content: `The game "${game}" is not available. Please choose another game.`, ephemeral: true });
             return;
         }
 
