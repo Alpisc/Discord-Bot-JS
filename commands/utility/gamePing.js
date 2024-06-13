@@ -49,7 +49,7 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(button);
 
-        await interaction.reply({ embeds: [embed], components: [row] });
+        await interaction.editReply({ embeds: [embed], components: [row] });
 
         const filter = i => i.customId === 'click';
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 300000 });
@@ -68,7 +68,7 @@ module.exports = {
                 .setTitle(`${interaction.user.username} is looking for others to play ${role.label}`)
                 .setDescription(`<@&${role.id}>\n${counter}/${neededPlayers}`);
 
-            await i.update({ embeds: [newEmbed], components: [row] });
+            await i.editReply({ embeds: [newEmbed], components: [row] });
 
             if (counter === 5) {
                 const userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
