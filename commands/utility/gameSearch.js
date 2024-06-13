@@ -40,10 +40,12 @@ module.exports = {
         counter++;
         users.add(interaction.user.id);
 
+        let userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
+
         const embed = new EmbedBuilder()
             .setColor(0x0099ff)
             .setTitle(`${interaction.user.username} is looking for others to play \`${role.label}\``)
-            .setDescription(`${counter}/${neededPlayers}`);
+            .setDescription(`${counter}/${neededPlayers}\n${userMentions}`);
 
         const button = new ButtonBuilder()
             .setCustomId('click')
@@ -69,18 +71,21 @@ module.exports = {
                 counter++;
                 users.add(i.user.id);
             }
+            
+            userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
 
             const newEmbed = new EmbedBuilder()
                 .setColor(0x0099ff)
                 .setTitle(`${interaction.user.username} is looking for others to play \`${role.label}\``)
-                .setDescription(`<@&${role.id}>\n${counter}/${neededPlayers}`);
+                .setDescription(`${counter}/${neededPlayers}\n${userMentions}`);
 
             await i.update({ embeds: [newEmbed], components: [row] });
 
             if (counter >= neededPlayers) {
-                const userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
+                userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
                 await interaction.followUp(`Enough players want to play \`${role.label}\`!: ${userMentions}`);
                 collector.stop();
+                return;
             }
         });
 
