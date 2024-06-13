@@ -26,7 +26,7 @@ module.exports = {
 
         const roles = require("../../roles.json")
 
-        const role = roles.find(role => role.label === game);
+        const role = roles.find(role => role.label.toLowerCase() === game.toLowerCase());
         if (!role) {
             await interaction.editReply({ content: `The game \`${game}\` is not available. Please choose another game.` });
             return;
