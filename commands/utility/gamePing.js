@@ -28,7 +28,7 @@ module.exports = {
 
         const role = roles.find(role => role.label === game);
         if (!role) {
-            await interaction.reply({ content: `The game "${game}" is not available. Please choose another game.`, ephemeral: true });
+            await interaction.editReply({ content: `The game "${game}" is not available. Please choose another game.`, ephemeral: true });
             return;
         }
 
