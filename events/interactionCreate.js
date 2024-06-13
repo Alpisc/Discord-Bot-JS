@@ -5,7 +5,7 @@ module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
 		// Role claim button(s)
-		if (interaction.isButton()) {
+		if (interaction.isButton() && !interaction.customId == "click") {
 			await interaction.deferReply({ ephemeral: true });
 
 			const role = interaction.guild.roles.cache.get(interaction.customId)
