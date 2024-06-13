@@ -72,6 +72,12 @@ module.exports = {
                 users.add(i.user.id);
             }
             
+            if(counter <= 0){
+                await interaction.followUp(`Enough players want to play \`${role.label}\`!: ${userMentions}`);
+                collector.stop();
+                return;
+            }
+
             userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
 
             const newEmbed = new EmbedBuilder()
@@ -82,8 +88,6 @@ module.exports = {
             await i.update({ embeds: [newEmbed], components: [row] });
 
             if (counter >= neededPlayers) {
-                userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
-                await interaction.followUp(`Enough players want to play \`${role.label}\`!: ${userMentions}`);
                 collector.stop();
                 return;
             }
