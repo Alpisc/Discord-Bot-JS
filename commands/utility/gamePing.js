@@ -68,7 +68,7 @@ module.exports = {
                 .setTitle(`${interaction.user.username} is looking for others to play ${role.label}`)
                 .setDescription(`<@&${role.id}>\n${counter}/${neededPlayers}`);
 
-            await i.editReply({ embeds: [newEmbed], components: [row] });
+            await i.update({ embeds: [newEmbed], components: [row] });
 
             if (counter === 5) {
                 const userMentions = Array.from(users).map(id => `<@${id}>`).join(', ');
