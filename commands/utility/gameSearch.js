@@ -81,12 +81,12 @@ module.exports = {
 
             await i.update({ embeds: [newEmbed], components: [row] });
 
-            if (counter <= neededPlayers) {
+            if (counter >= neededPlayers) {
                 await interaction.followUp(`Enough players want to play \`${role.label}\`!: ${userMentions}`);
                 collector.stop();
             }
 
-            if(counter <= 0){
+            if (counter === 0) {
                 collector.stop();
             }
         });
