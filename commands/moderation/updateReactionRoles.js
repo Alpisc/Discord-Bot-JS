@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const fs = require("fs");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,7 +11,7 @@ module.exports = {
         const channel = await interaction.client.channels.cache.get(process.env.reactionChannelId);
         if (!channel) return;
 
-        const roles = require("../../roles.json");
+        const roles = JSON.parse(fs.readFileSync("../../roles.json", "utf-8"))
     
         const rows = [];
         let row = new ActionRowBuilder();
