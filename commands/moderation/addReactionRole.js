@@ -23,6 +23,7 @@ module.exports = {
         let role = await interaction.guild.roles.create({
             name: name,
             reason: `Created via interaction from ${interaction.member.displayName}`,
+            mentionable: true
         })
         .catch(async (e) => {
             await interaction.editReply({ content: `Failed to create role: ${e}`});
