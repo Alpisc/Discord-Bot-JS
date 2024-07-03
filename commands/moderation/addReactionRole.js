@@ -3,8 +3,8 @@ const fs = require("fs");
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('createrole')
-		.setDescription('Creates a role with a specific name and returns the id')
+		.setName('addreactionrole')
+		.setDescription('Creates a new reaction role')
         .addStringOption(option =>
             option
                 .setName("name")
