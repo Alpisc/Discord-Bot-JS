@@ -14,7 +14,7 @@ module.exports = {
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
-        const name = interaction.options.getString("name");
+        const name = interaction.options.getString("name").replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()); // get the name, and make each word uppercase
         await interaction.deferReply({ ephemeral: true });
 
         const rolesPath = path.join(__dirname, "../../roles.json");
