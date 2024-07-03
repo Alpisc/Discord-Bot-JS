@@ -4,46 +4,55 @@ const path = require("path");
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('addreactionrole')
-		.setDescription('Creates a new reaction role')
+		.setName('deletereactionrole')
+		.setDescription('Deletes an existing reaction role')
         .addStringOption(option =>
             option
                 .setName("name")
-                .setDescription("How should the role be called")
+                .setDescription("Which role do you want to delete?")
                 .setRequired(true)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
-        const name = interaction.options.getString("name").replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()); // get the name, and make each word uppercase
+        const name = interaction.options.getString("name");
         await interaction.deferReply({ ephemeral: true });
 
         const rolesPath = path.join(__dirname, "../../roles.json");
         const roles = JSON.parse(fs.readFileSync(rolesPath, "utf-8"));
 
-        let role = await interaction.guild.roles.create({
-            name: name,
-            reason: `Created via interaction from ${interaction.member.displayName}`,
-        })
-        .catch(async (e) => {
-            await interaction.editReply({ content: `Failed to create role: ${e}`});
+        // Find the role in the JSON data
+        const roleIndex = roles.findIndex(role => role.label.toLowerCase() === name.toLowerCase());
+        if (roleIndex === -1) {
+            await interaction.editReply({ content: `Role with label \`${name}\` not found.` });
             return;
-        })
-
-        let newRole = {
-            "id": role.id,
-            "label": name
         }
 
-        roles.push(newRole);
+        const roleId = roles[roleIndex].id;
 
-        let newData = JSON.stringify(roles, null, 4);
+        // Delete the role in Discord
+        try {
+            const role = await interaction.guild.roles.fetch(roleId);
+            if (role) {
+                await role.delete(`Deleted via interaction from ${interaction.member.displayName}`);
+            }
+        } catch (e) {
+            await interaction.editReply({ content: `Failed to delete role: ${e}` });
+            return;
+        }
+
+        // Remove the role from the JSON data
+        roles.splice(roleIndex, 1);
+
+        // Save the updated JSON back to the file
+        const newData = JSON.stringify(roles, null, 4);
         fs.writeFile(rolesPath, newData, async err => {
             if (err) {
-                await interaction.editReply({content: `Error saving new JSON config: ${err}`});
+                await interaction.editReply({ content: `Error saving new JSON config: ${err}` });
                 return;
             }
-        })
+        });
 
+        // Update the buttons in the reaction channel
         const channel = await interaction.client.channels.cache.get(process.env.reactionChannelId);
         if (!channel) return;
     
@@ -65,6 +74,6 @@ module.exports = {
         await channel.bulkDelete(1);
     
         await channel.send({ content: "Claim or remove a role", components: rows });
-        await interaction.editReply({ content: `Created \`${name}\` and Updated reaction roles!` });
+        await interaction.editReply({ content: `Deleted \`${name}\` and Updated reaction roles!` });
     }
 };
