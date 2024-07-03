@@ -36,7 +36,7 @@ module.exports = {
 
         roles.push(newRole);
 
-        let newData = JSON.stringify(roles);
+        let newData = JSON.stringify(roles, null, 4);
         fs.writeFile(rolesPath, newData, async err => {
             if (err) {
                 await interaction.editReply({content: `Error saving new JSON config: ${err}`});
