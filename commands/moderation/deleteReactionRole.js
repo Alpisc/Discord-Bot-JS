@@ -33,7 +33,7 @@ module.exports = {
         try {
             const role = await interaction.guild.roles.fetch(roleId);
             if (role) {
-                await role.delete(`Deleted via interaction from ${interaction.member.displayName}`);
+                await role.delete({ reason: `Deleted via interaction from ${interaction.member.displayName}` });
             }
         } catch (e) {
             await interaction.editReply({ content: `Failed to delete role: ${e}` });
