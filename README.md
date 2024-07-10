@@ -1,6 +1,6 @@
-﻿# Big-Brother-JS
+﻿# Discord-Bot-JS
 
-Big-Brother-JS is a Discord bot built using Discord.js. It provides various utility commands and event handling features to enhance server management and user interaction.
+Discord-Bot-JS is a Discord bot built using Discord.js. It provides various utility commands and event handling features to enhance server management and user interaction.
 
 ## Features
 
@@ -14,11 +14,11 @@ Big-Brother-JS is a Discord bot built using Discord.js. It provides various util
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Alpisc/Big-Brother-JS/
+   git clone https://github.com/Alpisc/Discord-Bot-JS/
    ```
 2. Navigate to the project directory:
    ```bash
-   cd Big-Brother-JS
+   cd Discord-Bot-JS
    ```
 3. Install dependencies:
    ```bash
@@ -37,17 +37,26 @@ Create a `.env` file in the root directory and add the following variables:
 
 To start the bot, run:
 ```bash
-node index.js
+node .
 ```
 
 ## Commands
 
+### Utility Commands
 - `/ping`: Check the bot's latency.
-- `/server`: Get server details.
-- `/user`: Get user details.
-- `/avatar`: Fetch a user's avatar.
-- `/purge`: Delete a specified number of messages.
-- `/mute`, `/unmute`, `/rename`: Manage user roles and nicknames.
+- `/server`: Provides information about the server.
+- `/user`: Provides information about the user.
+- `/avatar`: Fetches a user's avatar.
+- `/gamesearch`: Initiates a search for players to join a game. Requires `game` (name of the game) and `amount` (number of players needed).
+
+### Moderation Commands
+- `/purge`: Deletes a specified number of messages. Requires `amount` (number of messages to delete).
+- `/mute`: Mutes a specific user. Requires `user` (the user to mute).
+- `/unmute`: Unmutes a specific user. Requires `user` (the user to unmute).
+- `/rename`: Renames a specific user. Requires `user` (the user to rename) and `nickname` (new nickname).
+- `/addreactionrole`: Creates a new reaction role. Requires `name` (name of the role).
+- `/deletereactionrole`: Deletes an existing reaction role. Requires `name` (name of the role).
+- `/move`: Moves users from one voice channel to another. Requires `from` (source channel) and `to` (destination channel).
 
 ## Contributing
 
