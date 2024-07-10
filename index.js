@@ -1,7 +1,8 @@
 require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const sendReactionRole = require("./functions/sendReactionRole")
 
 const client = new Client({
     intents: [
@@ -45,6 +46,13 @@ for (const file of eventFiles) {
 	}
 }
 
+async function main() {
+    const rolesPath = path.join(__dirname, "../../roles.json");
+    const roles = JSON.parse(fs.readFileSync(rolesPath, "utf-8"));
 
+    await sendReactionRole(roles);
 
-client.login(process.env.token);
+    client.login(process.env.token);
+}
+
+main().catch(console.error);
