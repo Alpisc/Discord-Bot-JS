@@ -1,5 +1,6 @@
 const { Events, ActivityType } = require('discord.js');
 const path = require('node:path');
+const fs = require('node:fs');
 const sendReactionRole = require("../functions/sendReactionRole");
 
 module.exports = {
