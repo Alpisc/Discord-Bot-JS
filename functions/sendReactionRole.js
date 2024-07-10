@@ -22,4 +22,4 @@ async function sendReactionRole(roles) {
     await channel.send({ content: "Claim or remove a role", components: rows });
 }
 
-module.exports = { sendReactionRole };
+module.exports = sendReactionRole;
