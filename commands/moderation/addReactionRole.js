@@ -46,7 +46,7 @@ module.exports = {
             }
         })
 
-        await sendReactionRole(roles);
+        await sendReactionRole(interaction.client, roles);
 
         await interaction.editReply({ content: `Created \`${name}\` and Updated reaction roles!` });
     }

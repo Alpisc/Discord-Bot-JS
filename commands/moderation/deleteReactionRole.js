@@ -53,7 +53,7 @@ module.exports = {
             }
         });
 
-        await sendReactionRole(roles);
+        await sendReactionRole(interaction.client, roles);
 
         await interaction.editReply({ content: `Deleted \`${name}\` and Updated reaction roles!` });
     }

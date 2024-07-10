@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-async function sendReactionRole(roles) {
-    const channel = await interaction.client.channels.cache.get(process.env.reactionChannelId);
+async function sendReactionRole(client, roles) {
+    const channel = await client.channels.cache.get(process.env.reactionChannelId);
     if (!channel) return;
 
     const rows = [];
