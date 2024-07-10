@@ -1,4 +1,6 @@
 const { Events, ActivityType } = require('discord.js');
+const path = require('node:path');
+const sendReactionRole = require("../functions/sendReactionRole");
 
 module.exports = {
 	name: Events.ClientReady,
