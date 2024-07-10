@@ -7,7 +7,8 @@ module.exports = {
         .setDescription('Random image/ gif of duck(s).'),
     async execute(interaction) {
         try {
-            const url = await axios.get("https://random-d.uk/api/quack").data.url;
+            const response = await axios.get("https://random-d.uk/api/quack");
+            const url = response.data.url;
             await interaction.reply({ content: url });
         } catch (error) {
             await interaction.reply({ content: `Error:\`${error}\``, ephemeral: true });
