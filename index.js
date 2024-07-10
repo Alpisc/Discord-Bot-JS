@@ -46,13 +46,4 @@ for (const file of eventFiles) {
 	}
 }
 
-async function main() {
-    const rolesPath = path.join(__dirname, "./roles.json");
-    const roles = JSON.parse(fs.readFileSync(rolesPath, "utf-8"));
-
-    await sendReactionRole(roles);
-
-    client.login(process.env.token);
-}
-
-main().catch(console.error);
+client.login(process.env.token);

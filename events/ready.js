@@ -6,5 +6,10 @@ module.exports = {
 	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
         await client.user.setPresence({ activities: [{ name: 'You', type: ActivityType.Watching }], status: 'dnd' });
+
+		const rolesPath = path.join(__dirname, "./roles.json");
+		const roles = JSON.parse(fs.readFileSync(rolesPath, "utf-8"));
+	
+		await sendReactionRole(client, roles);
 	},
 };
