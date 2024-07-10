@@ -9,7 +9,7 @@ module.exports = {
         try {
             const response = await axios.get("https://random-d.uk/api/quack");
             const url = response.data.url;
-            await interaction.reply({ content: url });
+            await interaction.reply({ files: [{ attachment: url }] });
         } catch (error) {
             await interaction.reply({ content: `Error:\`${error}\``, ephemeral: true });
         }
