@@ -32,11 +32,13 @@ module.exports = {
             return;
         }
 
+        let roleName; // Used in reply message
+
         // Delete the role in Discord
         try {
             const role = await interaction.guild.roles.fetch(roleId);
             if (role) {
-                const roleName = role.name; // Use a new variable to avoid reassigning `name`
+                roleName = role.name; // Use a new variable to avoid reassigning `name`
                 await role.delete({ reason: `Deleted via interaction from ${interaction.member.displayName}` });
             }
         } catch (e) {
@@ -58,6 +60,6 @@ module.exports = {
 
         await sendReactionRole(interaction.client, updatedRoles);
 
-        await interaction.editReply({ content: `Deleted \`${name}\` and Updated reaction roles!` });
+        await interaction.editReply({ content: `Deleted \`${roleName}\` and Updated reaction roles!` });
     }
 };
