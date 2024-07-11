@@ -36,6 +36,7 @@ module.exports = {
         try {
             const role = await interaction.guild.roles.fetch(roleId);
             if (role) {
+                const roleName = role.name; // Use a new variable to avoid reassigning `name`
                 await role.delete({ reason: `Deleted via interaction from ${interaction.member.displayName}` });
             }
         } catch (e) {
@@ -48,12 +49,12 @@ module.exports = {
 
         // Save the updated JSON back to the file
         const newData = JSON.stringify(updatedRoles, null, 4);
-        fs.writeFile(rolesPath, newData, async err => {
-            if (err) {
-                await interaction.editReply({ content: `Error saving new JSON config: ${err}` });
-                return;
-            }
-        });
+        try {
+            await fs.promises.writeFile(rolesPath, newData); // Use fs.promises.writeFile for async/await
+        } catch (err) {
+            await interaction.editReply({ content: `Error saving new JSON config: ${err}` });
+            return;
+        }
 
         await sendReactionRole(interaction.client, updatedRoles);
 
