@@ -7,14 +7,17 @@ async function sendReactionRole(client, roles) {
     const rows = [];
     let row = new ActionRowBuilder();
 
-    roles.forEach((role, index) => {
+    roles.forEach((roleId, index) => {
         if (index % 5 === 0 && index !== 0) { // Every 5 entries, start a new row
             rows.push(row);
             row = new ActionRowBuilder();
         }
-        row.addComponents(
-            new ButtonBuilder().setCustomId(role.id).setLabel(role.label).setStyle(ButtonStyle.Primary)
-        );
+        const role = channel.guild.roles.cache.get(roleId);
+        if (role) {
+            row.addComponents(
+                new ButtonBuilder().setCustomId(roleId).setLabel(role.name).setStyle(ButtonStyle.Primary)
+            );
+        }
     });
 
     rows.push(row); // Push the last row even if it's not full

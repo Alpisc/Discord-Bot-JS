@@ -31,12 +31,7 @@ module.exports = {
             return;
         })
 
-        let newRole = {
-            "id": role.id,
-            "label": name
-        }
-
-        roles.push(newRole);
+        roles.push(role.id); // Add only the role ID to the array
 
         let newData = JSON.stringify(roles, null, 4);
         fs.writeFile(rolesPath, newData, async err => {

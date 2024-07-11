@@ -22,13 +22,15 @@ module.exports = {
         const roles = JSON.parse(fs.readFileSync(rolesPath, "utf-8"));
 
         // Find the role in the JSON data
-        const roleIndex = roles.findIndex(role => role.label.toLowerCase() === name.toLowerCase());
-        if (roleIndex === -1) {
-            await interaction.editReply({ content: `Role with label \`${name}\` not found.` });
+        const roleId = roles.find(id => {
+            const role = interaction.guild.roles.cache.get(id);
+            return role && role.name.toLowerCase() === name.toLowerCase();
+        });
+
+        if (!roleId) {
+            await interaction.editReply({ content: `Role with name \`${name}\` not found.` });
             return;
         }
-
-        const roleId = roles[roleIndex].id;
 
         // Delete the role in Discord
         try {
@@ -41,11 +43,11 @@ module.exports = {
             return;
         }
 
-        // Remove the role from the JSON data
-        roles.splice(roleIndex, 1);
+        // Remove the role ID from the JSON data
+        const updatedRoles = roles.filter(id => id !== roleId);
 
         // Save the updated JSON back to the file
-        const newData = JSON.stringify(roles, null, 4);
+        const newData = JSON.stringify(updatedRoles, null, 4);
         fs.writeFile(rolesPath, newData, async err => {
             if (err) {
                 await interaction.editReply({ content: `Error saving new JSON config: ${err}` });
@@ -53,7 +55,7 @@ module.exports = {
             }
         });
 
-        await sendReactionRole(interaction.client, roles);
+        await sendReactionRole(interaction.client, updatedRoles);
 
         await interaction.editReply({ content: `Deleted \`${name}\` and Updated reaction roles!` });
     }
