@@ -26,13 +26,24 @@ module.exports = {
 
         const roles = require("../../roles.json")
 
-        const role = roles.find(role => role.label.toLowerCase() === game.toLowerCase());
-        if (!role) {
+        // Find the role in roles.json
+        const roleConfig = roles.find(role => role.label.toLowerCase() === game.toLowerCase());
+        if (!roleConfig) {
             await interaction.editReply({ content: `The game \`${game}\` is not available. Please choose another game.` });
             return;
         }
         if(neededPlayers <= 1){
             await interaction.editReply({ content: "You need to be looking for more than one person" });
+            return;
+        }
+
+        // Fetch all roles from the guild
+        const guildRoles = await interaction.guild.roles.fetch();
+
+        // Find the role by name
+        const role = guildRoles.cache.find(r => r.name.toLowerCase() === roleConfig.label.toLowerCase());
+        if (!role) {
+            await interaction.editReply({ content: `The role for the game \`${game}\` could not be found on the server.` });
             return;
         }
 
@@ -56,8 +67,7 @@ module.exports = {
             .addComponents(button);
 
 
-        const roleObject = await interaction.guild.roles.fetch(role.id);
-        await interaction.channel.send({ content: `${roleObject}` })
+        await interaction.channel.send({ content: `${role}` })
         await interaction.editReply({ embeds: [embed], components: [row] });
 
         const filter = i => i.customId === 'click';
@@ -76,13 +86,13 @@ module.exports = {
 
             const newEmbed = new EmbedBuilder()
                 .setColor(0x0099ff)
-                .setTitle(`${interaction.user.username} is looking for others to play \`${role.label}\``)
+                .setTitle(`${interaction.user.username} is looking for others to play \`${role.name}\``)
                 .setDescription(`${counter}/${neededPlayers}\n${userMentions}`);
 
             await i.update({ embeds: [newEmbed], components: [row] });
 
             if (counter >= neededPlayers) {
-                await interaction.followUp(`Enough players want to play \`${role.label}\`!: ${userMentions}`);
+                await interaction.followUp(`Enough players want to play \`${role.name}\`!: ${userMentions}`);
                 collector.stop();
             }
 
@@ -103,7 +113,7 @@ module.exports = {
 
             const timeOutEmbed = new EmbedBuilder()
                 .setColor(0x0099ff)
-                .setTitle(`${interaction.user.username} is looking for others to play \`${role.label}\``)
+                .setTitle(`${interaction.user.username} is looking for others to play \`${role.name}\``)
                 .setDescription('This Player search has ended');
 
             await interaction.editReply({ embeds: [timeOutEmbed], components: [disabledRow] });
