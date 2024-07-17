@@ -12,7 +12,7 @@ async function sendReactionRole(client, roles) {
             rows.push(row);
             row = new ActionRowBuilder();
         }
-        let role = interaction.guild.roles.cache.find(role => role.id === id);
+        let role = channel.guild.roles.cache.find(role => role.id === id);
         row.addComponents(
             new ButtonBuilder().setCustomId(id).setLabel(role.name).setStyle(ButtonStyle.Primary)
         );
