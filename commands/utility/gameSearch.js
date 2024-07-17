@@ -18,7 +18,7 @@ module.exports = {
         ),
     async execute(interaction) {
         await interaction.deferReply();
-        const game = interaction.options.getString("game");
+        const game = interaction.options.getString("game").toLowerCase();
         const neededPlayers = interaction.options.getInteger("amount");
 
         let counter = 0;
@@ -26,8 +26,10 @@ module.exports = {
 
         const roles = require("../../roles.json")
 
-        const role = roles.find(role => role.label.toLowerCase() === game.toLowerCase());
-        if (!role) {
+        let role = interaction.guild.roles.cache.find(role => role.name.toLowerCase() === game);
+        let valid = roles.some(role => role === role.id)
+
+        if (!role || !valid) {
             await interaction.editReply({ content: `The game \`${game}\` is not available. Please choose another game.` });
             return;
         }
@@ -44,7 +46,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(0x0099ff)
-            .setTitle(`${interaction.user.username} is looking for others to play \`${role.label}\``)
+            .setTitle(`${interaction.user.username} is looking for others to play \`${role.name}\``)
             .setDescription(`${counter}/${neededPlayers}\n${userMentions}`);
 
         const button = new ButtonBuilder()
@@ -56,8 +58,7 @@ module.exports = {
             .addComponents(button);
 
 
-        const roleObject = await interaction.guild.roles.fetch(role.id);
-        await interaction.channel.send({ content: `${roleObject}` })
+        await interaction.channel.send({ content: `${role}` })
         await interaction.editReply({ embeds: [embed], components: [row] });
 
         const filter = i => i.customId === 'click';
@@ -76,13 +77,13 @@ module.exports = {
 
             const newEmbed = new EmbedBuilder()
                 .setColor(0x0099ff)
-                .setTitle(`${interaction.user.username} is looking for others to play \`${role.label}\``)
+                .setTitle(`${interaction.user.username} is looking for others to play \`${role.name}\``)
                 .setDescription(`${counter}/${neededPlayers}\n${userMentions}`);
 
             await i.update({ embeds: [newEmbed], components: [row] });
 
             if (counter >= neededPlayers) {
-                await interaction.followUp(`Enough players want to play \`${role.label}\`!: ${userMentions}`);
+                await interaction.followUp(`Enough players want to play \`${role.name}\`!: ${userMentions}`);
                 collector.stop();
             }
 
@@ -103,7 +104,7 @@ module.exports = {
 
             const timeOutEmbed = new EmbedBuilder()
                 .setColor(0x0099ff)
-                .setTitle(`${interaction.user.username} is looking for others to play \`${role.label}\``)
+                .setTitle(`${interaction.user.username} is looking for others to play \`${role.name}\``)
                 .setDescription('This Player search has ended');
 
             await interaction.editReply({ embeds: [timeOutEmbed], components: [disabledRow] });
