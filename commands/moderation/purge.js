@@ -17,10 +17,10 @@ module.exports = {
         try {
             const messages = await interaction.channel.messages.fetch({ limit: messageCount });
             await interaction.channel.bulkDelete(messages);
-            await interaction.reply({content: `Successfully deleted \`${messageCount}\` messages`})
+            await interaction.editReply({content: `Successfully deleted \`${messageCount}\` messages` })
         } catch (error) {
             console.error('Error purging messages:', error);
-            await interaction.reply({ content: 'There was an error purging messages.', ephemeral: true });
+            await interaction.editReply({ content: 'There was an error purging messages.' });
         }
 	},
 };
