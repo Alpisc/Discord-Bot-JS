@@ -11,7 +11,7 @@ module.exports = {
             .setRequired(true)
         ),
 	async execute(interaction) {
-        await interaction.deferReply();
+        await interaction.deferReply({ ephemeral: true });
         const messageCount = interaction.options.getInteger("amount");
 
         try {
