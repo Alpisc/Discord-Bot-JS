@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require("fs");
 const path = require("path");
 const sendReactionRole = require("../../functions/sendReactionRole");
@@ -15,30 +15,31 @@ module.exports = {
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
-        const name = interaction.options.getString("name");
+        const name = interaction.options.getString("name").toLowerCase();
         await interaction.deferReply({ ephemeral: true });
 
         const rolesPath = path.join(__dirname, "../../roles.json");
         const roles = JSON.parse(fs.readFileSync(rolesPath, "utf-8"));
 
-        const roleIndex = roles.findIndex(role => role.label.toLowerCase() === name.toLowerCase());
+        let role;
+        let roleIndex;
+        try {
+            role = interaction.guild.roles.cache.find(role => role.name.toLowerCase() === name);
+            roleIndex = roles.indexOf(role.id);
+        } catch (e) {
+            await interaction.editReply({ content: `Failed to delete role: ${e}` });
+            return;
+        }
+
         if (roleIndex === -1) {
             await interaction.editReply({ content: `Role with label \`${name}\` not found.` });
             return;
         }
 
-        const roleId = roles[roleIndex].id;
-
-        // Delete the role in Discord
-        try {
-            const role = await interaction.guild.roles.fetch(roleId);
-            if (role) {
-                roleName = role.name; // Use a new variable to avoid reassigning `name`
-                await role.delete({ reason: `Deleted via interaction from ${interaction.member.displayName}` });
-            }
-        } catch (e) {
-            await interaction.editReply({ content: `Failed to delete role: ${e}` });
-            return;
+        let roleName;
+        if (role) {
+            roleName = role.name
+            await role.delete({ reason: `Deleted via interaction from ${interaction.member.displayName}` });
         }
 
         // Remove the role from the JSON data

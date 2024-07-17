@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require("fs");
 const path = require("path");
 const sendReactionRole = require("../../functions/sendReactionRole");
@@ -31,12 +31,7 @@ module.exports = {
             return;
         })
 
-        let newRole = {
-            "id": role.id,
-            "label": name
-        }
-
-        roles.push(newRole);
+        roles.push(role.id);
 
         let newData = JSON.stringify(roles, null, 4);
         fs.writeFile(rolesPath, newData, async err => {

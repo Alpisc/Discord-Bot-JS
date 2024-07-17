@@ -1,10 +1,4 @@
 [
-    {
-        "id": "role1ID",
-        "label": "roleName"
-    },
-    {
-        "id": "role2ID",
-        "label": "roleName"
-    }
+    "RoleId1",
+    "RoleId2"
 ]

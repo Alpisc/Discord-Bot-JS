@@ -7,13 +7,14 @@ async function sendReactionRole(client, roles) {
     const rows = [];
     let row = new ActionRowBuilder();
 
-    roles.forEach((role, index) => {
+    roles.forEach((id, index) => {
         if (index % 5 === 0 && index !== 0) { // Every 5 entries, start a new row
             rows.push(row);
             row = new ActionRowBuilder();
         }
+        let role = interaction.guild.roles.cache.find(role => role.id === id);
         row.addComponents(
-            new ButtonBuilder().setCustomId(role.id).setLabel(role.label).setStyle(ButtonStyle.Primary)
+            new ButtonBuilder().setCustomId(id).setLabel(role.name).setStyle(ButtonStyle.Primary)
         );
     });
 
