@@ -27,7 +27,7 @@ module.exports = {
         const roles = require("../../roles.json")
 
         let role = interaction.guild.roles.cache.find(role => role.name.toLowerCase() === game);
-        let valid = roles.some(role => role === role.id)
+        let valid = roles.some(roleId => roleId === role.id)
 
         if (!role || !valid) {
             await interaction.editReply({ content: `The game \`${game}\` is not available. Please choose another game.` });
