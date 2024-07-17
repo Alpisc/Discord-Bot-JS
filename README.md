@@ -31,7 +31,7 @@ Create a `.env` file in the root directory and add the following variables:
 - `token`: Your Discord bot token.
 - `clientId`: Your Discord application client ID.
 - `guildId`: Your Discord server (guild) ID.
-- `reactionChannelId`, `reactionChannelLogId`, `welcomeChannelId`, `ruleChannelId`, `editedLogsChannelId`, `deletedLogsChannelId`: Channel IDs for various functionalities.
+- `reactionChannelId`, `reactionChannelLogId`, `welcomeChannelId`, `editedLogsChannelId`, `deletedLogsChannelId`: Channel IDs for various functionalities.
 
 ## Running the Bot
 
@@ -48,6 +48,7 @@ node .
 - `/user`: Provides information about the user.
 - `/avatar`: Fetches a user's avatar.
 - `/gamesearch`: Initiates a search for players to join a game. Requires `game` (name of the game) and `amount` (number of players needed).
+- `/duck`: Fetches a random image or gif of a duck.
 
 ### Moderation Commands
 - `/purge`: Deletes a specified number of messages. Requires `amount` (number of messages to delete).
