@@ -17,6 +17,9 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+      uuid:
+        specifier: ^10.0.0
+        version: 10.0.0
 
 packages:
 
@@ -143,6 +146,10 @@ packages:
   undici@6.13.0:
     resolution: {integrity: sha512-Q2rtqmZWrbP8nePMq7mOJIN98M0fYvSgV89vwl/BQRT4mDOeY2GXZngfGpcBBhtky3woM7G24wZV3Q304Bv6cw==}
     engines: {node: '>=18.0'}
+
+  uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
 
   ws@8.17.0:
     resolution: {integrity: sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==}
@@ -293,5 +300,7 @@ snapshots:
   undici-types@5.26.5: {}
 
   undici@6.13.0: {}
+
+  uuid@10.0.0: {}
 
   ws@8.17.0: {}
