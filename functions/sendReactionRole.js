@@ -20,9 +20,21 @@ async function sendReactionRole(client, roles) {
 
     rows.push(row); // Push the last row even if it's not full
 
-    // Fetch and delete messages one by one if they are older than 14 days
+    // Fetch messages
     const messages = await channel.messages.fetch({ limit: 100 });
-    const oldMessages = messages.filter(msg => (Date.now() - msg.createdTimestamp) >= 14 * 24 * 60 * 60 * 1000);
+    const now = Date.now();
+    const fourteenDays = 14 * 24 * 60 * 60 * 1000;
+
+    // Separate messages into those that can be bulk deleted and those that need individual deletion
+    const bulkDeletableMessages = messages.filter(msg => now - msg.createdTimestamp < fourteenDays);
+    const oldMessages = messages.filter(msg => now - msg.createdTimestamp >= fourteenDays);
+
+    // Bulk delete messages that are less than 14 days old
+    if (bulkDeletableMessages.size > 0) {
+        await channel.bulkDelete(bulkDeletableMessages);
+    }
+
+    // Individually delete messages that are 14 days or older
     for (const msg of oldMessages.values()) {
         await msg.delete();
     }
