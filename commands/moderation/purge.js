@@ -16,8 +16,16 @@ module.exports = {
 
         try {
             const messages = await interaction.channel.messages.fetch({ limit: messageCount });
-            await interaction.channel.bulkDelete(messages);
-            await interaction.editReply({content: `Successfully deleted \`${messageCount}\` messages` })
+            const messagesToDelete = messages.filter(msg => (Date.now() - msg.createdTimestamp) < 14 * 24 * 60 * 60 * 1000);
+
+            await interaction.channel.bulkDelete(messagesToDelete);
+
+            const oldMessages = messages.filter(msg => (Date.now() - msg.createdTimestamp) >= 14 * 24 * 60 * 60 * 1000);
+            for (const msg of oldMessages.values()) {
+                await msg.delete();
+            }
+
+            await interaction.editReply({content: `Successfully deleted \`${messagesToDelete.size + oldMessages.size}\` messages` });
         } catch (error) {
             console.error('Error purging messages:', error);
             await interaction.editReply({ content: 'There was an error purging messages.' });
