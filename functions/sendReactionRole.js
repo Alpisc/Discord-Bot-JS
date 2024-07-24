@@ -20,7 +20,12 @@ async function sendReactionRole(client, roles) {
 
     rows.push(row); // Push the last row even if it's not full
 
-    await channel.bulkDelete(1);
+    // Fetch and delete messages one by one if they are older than 14 days
+    const messages = await channel.messages.fetch({ limit: 100 });
+    const oldMessages = messages.filter(msg => (Date.now() - msg.createdTimestamp) >= 14 * 24 * 60 * 60 * 1000);
+    for (const msg of oldMessages.values()) {
+        await msg.delete();
+    }
 
     await channel.send({ content: "Claim or remove a role", components: rows });
 }
