@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { v4: uuidv4 } = require('uuid'); // Add this line to import uuid
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -6,15 +7,15 @@ module.exports = {
         .setDescription('If you want to play games and look for others to join')
         .addStringOption(option =>
             option
-            .setName("game")
-            .setDescription("Supply the game name (from role selection)")
-            .setRequired(true)
+                .setName("game")
+                .setDescription("Supply the game name (from role selection)")
+                .setRequired(true)
         )
         .addIntegerOption(option =>
             option
-            .setName("amount")
-            .setDescription("The least amount of players you need to play (you included)")
-            .setRequired(true)
+                .setName("amount")
+                .setDescription("The least amount of players you need to play (you included)")
+                .setRequired(true)
         ),
     async execute(interaction) {
         await interaction.deferReply();
@@ -24,16 +25,16 @@ module.exports = {
         let counter = 0;
         let users = new Set();
 
-        const roles = require("../../roles.json")
+        const roles = require("../../roles.json");
 
         let role = interaction.guild.roles.cache.find(role => role.name.toLowerCase() === game);
-        let valid = roles.some(roleId => roleId === role.id)
+        let valid = roles.some(roleId => roleId === role.id);
 
         if (!role || !valid) {
             await interaction.editReply({ content: `The game \`${game}\` is not available. Please choose another game.` });
             return;
         }
-        if(neededPlayers <= 1){
+        if (neededPlayers <= 1) {
             await interaction.editReply({ content: "You need to be looking for more than one person" });
             return;
         }
@@ -49,19 +50,19 @@ module.exports = {
             .setTitle(`${interaction.user.username} is looking for others to play \`${role.name}\``)
             .setDescription(`${counter}/${neededPlayers}\n${userMentions}`);
 
+        const uniqueId = uuidv4(); // Generate a unique ID for this interaction
         const button = new ButtonBuilder()
-            .setCustomId('click')
+            .setCustomId(`click_${uniqueId}`) // Use the unique ID in the custom ID
             .setLabel('Join/ Leave')
             .setStyle(ButtonStyle.Primary);
 
         const row = new ActionRowBuilder()
             .addComponents(button);
 
-
-        await interaction.channel.send({ content: `${role}` })
+        await interaction.channel.send({ content: `${role}` });
         await interaction.editReply({ embeds: [embed], components: [row] });
 
-        const filter = i => i.customId === 'click';
+        const filter = i => i.customId === `click_${uniqueId}`; // Filter for the unique custom ID
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 600000 });
 
         collector.on('collect', async i => {
@@ -94,7 +95,7 @@ module.exports = {
 
         collector.on('end', async collected => {
             const disabledButton = new ButtonBuilder()
-                .setCustomId('click')
+                .setCustomId(`click_${uniqueId}`)
                 .setLabel('Join/ Leave')
                 .setStyle(ButtonStyle.Primary)
                 .setDisabled(true);
