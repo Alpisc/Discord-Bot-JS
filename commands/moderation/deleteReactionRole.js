@@ -27,7 +27,7 @@ module.exports = {
             role = interaction.guild.roles.cache.find(role => role.name.toLowerCase() === name);
             roleIndex = roles.indexOf(role.id);
         } catch (e) {
-            await interaction.editReply({ content: `Failed to delete role: ${e}` });
+            await interaction.editReply({ content: `Failed to delete role: ${e.toString().replace("TypeError: Cannot read properties of undefined (reading 'id')", "Role doesnt exist")}` });
             return;
         }
 
