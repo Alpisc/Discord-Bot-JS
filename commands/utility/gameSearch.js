@@ -20,7 +20,8 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply();
         const game = interaction.options.getString("game").toLowerCase();
-        const neededPlayers = interaction.options.getInteger("amount");
+
+        let neededPlayers = Math.min(interaction.options.getInteger("amount"), interaction.guild.memberCount);
 
         let counter = 0;
         let users = new Set();
