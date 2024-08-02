@@ -1,5 +1,7 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
-const { v4: uuidv4 } = require('uuid'); // Add this line to import uuid
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,7 +28,8 @@ module.exports = {
         let counter = 0;
         let users = new Set();
 
-        const roles = require("../../roles.json");
+        const rolesPath = path.join(__dirname, '..', '..', 'roles.json');
+        const roles = JSON.parse(fs.readFileSync(rolesPath, 'utf8'));
 
         let role = interaction.guild.roles.cache.find(role => role.name.toLowerCase() === game);
         let valid = roles.some(roleId => roleId === role.id);
