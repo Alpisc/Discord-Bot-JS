@@ -24,13 +24,15 @@ module.exports = {
         const member = await interaction.guild.members.fetch(user.id);
         let nickname = interaction.options.getString("nickname");
 
+        let previousName = user.username;
+
         // Check if nickname is null or empty
         if (!nickname || nickname.trim() === "") {
-            nickname = user.username;
+            nickname = previousName;
         }
 
         await member.setNickname(nickname);
-        await interaction.reply({content: `Nickname changed for ${user}.`});
+        await interaction.reply({content: `Changed ${user} nickname from ${previousName} to ${nickname}.`});
     }
 };
 
