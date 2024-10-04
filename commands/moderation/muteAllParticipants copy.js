@@ -24,7 +24,7 @@ module.exports = {
                 member.voice.setMute(true, 'Muted by bot command');
             });
 
-            await interaction.reply({ content: `Muted all users in \`${voicechat.name}\`.`, ephemeral: true });
+            await interaction.reply({ content: `Muted all users in \`${voicechat.name}\`.` });
         } catch (error) {
             console.error(error);
             await interaction.reply({ content: 'There was an error muting the users in the voice channel.', ephemeral: true });
