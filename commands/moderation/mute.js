@@ -12,13 +12,13 @@ module.exports = {
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
 	async execute(interaction) {
-        const user = interaction.options.getUser("user");
+        const user = interaction.options.getMember("user"); // Use getMember instead of getUser
         
-        if(user == interaction.member){
-            return interaction.reply({ content: "You cant mute yourself.", ephemeral: true });
+        if(user.id === interaction.member.id){
+            return interaction.reply({ content: "You can't mute yourself.", ephemeral: true });
         }
 
-        await user.edit({mute: true});
+        await user.voice.setMute(true); // Use setMute method on the GuildMember's voice state
         await interaction.reply({content: `Muted ${user}.`});
     }
 };
