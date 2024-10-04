@@ -1,28 +1,33 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('mutevoice')
-		.setDescription('Mutes all users in a voicechat')
+    data: new SlashCommandBuilder()
+        .setName('mutevoice')
+        .setDescription('Mutes all users in a voicechat')
         .addChannelOption(option =>
             option
                 .setName("voicechat")
                 .setDescription("Which channel do you want to be quiet?")
                 .setRequired(true)
+                .addChannelTypes(ChannelType.GuildVoice) // This line ensures only voice channels are shown
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
-	async execute(interaction) {
+    async execute(interaction) {
         const voicechat = interaction.options.getChannel("voicechat");
 
-        if (!voicechat || voicechat.type !== 'GUILD_VOICE') {
+        if (!voicechat || voicechat.type !== ChannelType.GuildVoice) {
             return interaction.reply({ content: 'Please provide a valid voice channel.', ephemeral: true });
         }
 
-        voicechat.members.forEach(member => {
-            member.voice.setMute(true, 'Muted by bot command');
-        });
+        try {
+            voicechat.members.forEach(member => {
+                member.voice.setMute(true, 'Muted by bot command');
+            });
 
-        await interaction.reply({ content: `Muted all users in ${voicechat.name}.` });
-
+            await interaction.reply({ content: `Muted all users in ${voicechat.name}.` });
+        } catch (error) {
+            console.error(error);
+            await interaction.reply({ content: 'There was an error muting the users in the voice channel.', ephemeral: true });
+        }
     }
 };
