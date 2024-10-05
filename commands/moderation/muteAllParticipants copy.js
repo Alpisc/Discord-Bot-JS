@@ -9,7 +9,7 @@ module.exports = {
                 .setName("voicechat")
                 .setDescription("Which channel do you want to be quiet?")
                 .setRequired(true)
-                .addChannelTypes(ChannelType.GuildVoice) // This line ensures only voice channels are shown
+                .addChannelTypes(ChannelType.GuildVoice)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
     async execute(interaction) {
@@ -27,23 +27,22 @@ module.exports = {
                 return interaction.reply({ content: 'The provided channel is not a valid voice channel.', ephemeral: true });
             }
 
-            await interaction.guild.members.fetch();
+            // Get the members in the voice channel
+            const membersInVoiceChannel = voicechat.members;
 
-            const membersInVoiceChannel = interaction.guild.members.cache.filter(member => 
-                member.voice.channelId === voicechat.id && !member.voice.serverMute
-            );
+            const unmutedMembers = membersInVoiceChannel.filter(member => !member.voice.serverMute);
 
-            if (membersInVoiceChannel.size === 0) {
+            if (unmutedMembers.size === 0) {
                 return interaction.reply({ content: `No unmuted users found in \`${voicechat.name}\`.`, ephemeral: true });
             }
 
-            const mutePromises = membersInVoiceChannel.map(member => 
+            const mutePromises = unmutedMembers.map(member => 
                 member.voice.setMute(true, 'Muted by bot command')
             );
 
             await Promise.all(mutePromises);
 
-            await interaction.reply({ content: `Muted ${membersInVoiceChannel.size} user(s) in \`${voicechat.name}\`.` });
+            await interaction.reply({ content: `Muted ${unmutedMembers.size} user(s) in \`${voicechat.name}\`.` });
         } catch (error) {
             console.error(error);
             await interaction.reply({ content: 'There was an error muting the users in the voice channel.', ephemeral: true });

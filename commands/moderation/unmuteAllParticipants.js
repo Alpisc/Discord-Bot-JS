@@ -13,16 +13,20 @@ module.exports = {
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
     async execute(interaction) {
-        const voicechat = interaction.options.getChannel("voicechat");
+        const voicechatOption = interaction.options.getChannel("voicechat");
 
-        if (!voicechat || voicechat.type !== ChannelType.GuildVoice) {
+        if (!voicechatOption || voicechatOption.type !== ChannelType.GuildVoice) {
             return interaction.reply({ content: 'Please provide a valid voice channel.', ephemeral: true });
         }
 
         try {
-            const fetchedVoiceChannel = await interaction.guild.channels.fetch(voicechat.id);
+            const voicechat = await interaction.guild.channels.fetch(voicechatOption.id);
+
+            if (!voicechat || voicechat.type !== ChannelType.GuildVoice) {
+                return interaction.reply({ content: 'The provided channel is not a valid voice channel.', ephemeral: true });
+            }
             
-            const membersInVoiceChannel = await fetchedVoiceChannel.members.fetch();
+            const membersInVoiceChannel = voicechat.members;
 
             const mutedMembers = membersInVoiceChannel.filter(member => member.voice.serverMute);
 
