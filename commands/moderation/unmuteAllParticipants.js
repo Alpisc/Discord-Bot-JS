@@ -20,22 +20,22 @@ module.exports = {
         }
 
         try {
-            await interaction.guild.members.fetch();
+            const fetchedVoiceChannel = await interaction.guild.channels.fetch(voicechat.id);
+            
+            const membersInVoiceChannel = await fetchedVoiceChannel.members.fetch();
 
-            const membersInVoiceChannel = interaction.guild.members.cache.filter(member => 
-                member.voice.channelId === voicechat.id && member.voice.serverMute
-            );
+            const mutedMembers = membersInVoiceChannel.filter(member => member.voice.serverMute);
 
-            if (membersInVoiceChannel.size === 0) {
+            if (mutedMembers.size === 0) {
                 return interaction.reply({ content: `No muted users found in \`${voicechat.name}\`.`, ephemeral: true });
             }
 
-            const mutePromises = membersInVoiceChannel.map(member => 
+            const mutePromises = mutedMembers.map(member => 
                 member.voice.setMute(false, 'Unmuted by bot command')
             );
             await Promise.all(mutePromises);
 
-            await interaction.reply({ content: `Unmuted ${membersInVoiceChannel.size} user(s) in \`${voicechat.name}\`.` });
+            await interaction.reply({ content: `Unmuted ${mutedMembers.size} user(s) in \`${voicechat.name}\`.` });
         } catch (error) {
             console.error(error);
             await interaction.reply({ content: 'There was an error unmuting the users in the voice channel.', ephemeral: true });
