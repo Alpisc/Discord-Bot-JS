@@ -12,6 +12,7 @@ module.exports = {
                 .addChannelTypes(ChannelType.GuildVoice)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
+    aliases: ['mv'],
     async execute(interaction) {
         const voicechatOption = interaction.options.getChannel("voicechat");
 
@@ -20,14 +21,13 @@ module.exports = {
         }
 
         try {
-            // Fetch the voice channel to ensure we have the most up-to-date information
             const voicechat = await interaction.guild.channels.fetch(voicechatOption.id);
 
             if (!voicechat || voicechat.type !== ChannelType.GuildVoice) {
                 return interaction.reply({ content: 'The provided channel is not a valid voice channel.', ephemeral: true });
             }
 
-            // Get the members in the voice channel
+            await voicechat.members.fetch();
             const membersInVoiceChannel = voicechat.members;
 
             const unmutedMembers = membersInVoiceChannel.filter(member => !member.voice.serverMute);

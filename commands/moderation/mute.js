@@ -11,8 +11,9 @@ module.exports = {
                 .setRequired(true)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
+    aliases: ['m'],
 	async execute(interaction) {
-        const user = interaction.options.getMember("user"); // Use getMember to get the GuildMember object
+        const user = interaction.options.getMember("user");
 
         if(user.id === interaction.member.id){
             return interaction.reply({ content: "You can't mute yourself.", ephemeral: true });
@@ -23,7 +24,7 @@ module.exports = {
             return interaction.reply({ content: "Muted role not found. Please create a 'Muted' role with appropriate permissions.", ephemeral: true });
         }
 
-        await user.roles.add(muteRole); // Assign the Muted role to the user
+        await user.roles.add(muteRole);
         await interaction.reply({content: `Muted ${user} in all channels.`});
     }
 };
