@@ -37,7 +37,11 @@ module.exports = {
 
         if (!interaction.isChatInputCommand()) return;
 
-        const command = interaction.client.commands.get(interaction.commandName);
+        let command = interaction.client.commands.get(interaction.commandName);
+
+        if (!command) {
+            command = interaction.client.aliases.get(interaction.commandName);
+        }
 
         if (!command) {
             console.error(`No command matching ${interaction.commandName} was found.`);
