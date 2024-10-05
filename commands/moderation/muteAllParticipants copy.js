@@ -27,7 +27,6 @@ module.exports = {
                 return interaction.reply({ content: 'The provided channel is not a valid voice channel.', ephemeral: true });
             }
 
-            await voicechat.members.fetch();
             const membersInVoiceChannel = voicechat.members;
 
             const unmutedMembers = membersInVoiceChannel.filter(member => !member.voice.serverMute);
