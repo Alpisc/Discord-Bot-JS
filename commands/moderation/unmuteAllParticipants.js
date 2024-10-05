@@ -20,11 +20,16 @@ module.exports = {
         }
 
         try {
-            voicechat.members.forEach(member => {
-                member.voice.setMute(false, 'Unmuted by bot command');
-            });
+            await interaction.guild.members.fetch();
 
-            await interaction.reply({ content: `Unmuted all users in \`${voicechat.name}\`.`});
+            const membersInVoiceChannel = interaction.guild.members.cache.filter(member => member.voice.channelId === voicechat.id);
+
+            const mutePromises = membersInVoiceChannel.map(member => 
+                member.voice.setMute(false, 'Unmuted by bot command')
+            );
+            await Promise.all(mutePromises);
+
+            await interaction.reply({ content: `Unmuted all users in \`${voicechat.name}\`.` });
         } catch (error) {
             console.error(error);
             await interaction.reply({ content: 'There was an error unmuting the users in the voice channel.', ephemeral: true });

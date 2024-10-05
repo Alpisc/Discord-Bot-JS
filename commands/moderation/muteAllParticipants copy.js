@@ -20,9 +20,15 @@ module.exports = {
         }
 
         try {
-            voicechat.members.forEach(member => {
-                member.voice.setMute(true, 'Muted by bot command');
-            });
+            await interaction.guild.members.fetch();
+
+            const membersInVoiceChannel = interaction.guild.members.cache.filter(member => member.voice.channelId === voicechat.id);
+
+            const mutePromises = membersInVoiceChannel.map(member => 
+                member.voice.setMute(true, 'Muted by bot command')
+            );
+
+            await Promise.all(mutePromises);
 
             await interaction.reply({ content: `Muted all users in \`${voicechat.name}\`.` });
         } catch (error) {
