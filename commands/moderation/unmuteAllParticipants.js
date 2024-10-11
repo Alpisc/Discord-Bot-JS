@@ -12,7 +12,6 @@ module.exports = {
                 .addChannelTypes(ChannelType.GuildVoice)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
-    aliases: ['umv'],
     async execute(interaction) {
         const voicechatOption = interaction.options.getChannel("voicechat");
 

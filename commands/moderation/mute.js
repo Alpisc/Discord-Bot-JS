@@ -11,7 +11,6 @@ module.exports = {
                 .setRequired(true)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.MuteMembers),
-    aliases: ['m'],
 	async execute(interaction) {
         const user = interaction.options.getMember("user");
 
