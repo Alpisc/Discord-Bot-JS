@@ -24,7 +24,7 @@ module.exports = {
         const member = await interaction.guild.members.fetch(user.id);
         let nickname = interaction.options.getString("nickname");
 
-        let previousName = user.nickname;
+        let previousName = member.displayName;
 
         // Check if nickname is null or empty
         if (!nickname || nickname.trim() === "") {
