@@ -34,6 +34,10 @@ Create a `.env` file in the root directory and add the following variables:
 - `reactionChannelId`, `reactionChannelLogId`, `welcomeChannelId`, `editedLogsChannelId`, `deletedLogsChannelId`: Channel IDs for various functionalities.
 
 ## Running the Bot
+To register commands (run this if it's your first time or a new command was added) run:
+```bash
+node deploy-commands.js
+```
 
 To start the bot, run:
 ```bash
