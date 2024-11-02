@@ -26,19 +26,19 @@ module.exports = {
         
             // Ensure both channels are voice channels
             if (from.type !== ChannelType.GuildVoice || to.type !== ChannelType.GuildVoice) {
-                return interaction.reply({ content: "Both channels must be voice channels.", ephemeral: true });
+                return interaction.editReply({ content: "Both channels must be voice channels.", ephemeral: true });
             }
         
             // Prevent moving users to the same channel
             if (from.id === to.id) {
-                return interaction.reply({ content: "You cannot move users to the same channel.", ephemeral: true });
+                return interaction.editReply({ content: "You cannot move users to the same channel.", ephemeral: true });
             }
         
             let counter = 0;
         
             // Check if there are members in the 'from' channel
             if (from.members.size === 0) {
-                return interaction.reply({ content: "There are no users in the voice channel to move.", ephemeral: true });
+                return interaction.editReply({ content: "There are no users in the voice channel to move.", ephemeral: true });
             }
         
             // Move members from 'from' channel to 'to' channel
@@ -49,6 +49,6 @@ module.exports = {
                 }
             });
         
-            await interaction.reply({content: `Moved ${counter} users from <#${from.id}> to <#${to.id}>` });
+            await interaction.editReply({content: `Moved ${counter} users from <#${from.id}> to <#${to.id}>` });
         },
 };
