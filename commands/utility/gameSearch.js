@@ -57,22 +57,38 @@ module.exports = {
             .setTitle(`${interaction.user.username} is looking for others to play \`${role.name}\``)
             .setDescription(`${counter}/${neededPlayers}\n${userMentions}`);
 
-        const uniqueId = uuidv4(); // Generate a unique ID for this interaction
-        const button = new ButtonBuilder()
-            .setCustomId(`click_${uniqueId}`) // Use the unique ID in the custom ID
+        const uniqueId = uuidv4();
+        const joinButton = new ButtonBuilder()
+            .setCustomId(`click_${uniqueId}`)
             .setLabel('Join/ Leave')
             .setStyle(ButtonStyle.Primary);
 
+        const stopButton = new ButtonBuilder()
+            .setCustomId(`stop_${uniqueId}`)
+            .setLabel('Stop Search')
+            .setStyle(ButtonStyle.Danger);
+
         const row = new ActionRowBuilder()
-            .addComponents(button);
+            .addComponents(joinButton, stopButton);
 
         await interaction.channel.send({ content: `${role}` });
         await interaction.editReply({ embeds: [embed], components: [row] });
 
-        const filter = i => i.customId === `click_${uniqueId}`; // Filter for the unique custom ID
-        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 600000 });
+        const collector = interaction.channel.createMessageComponentCollector({ 
+            filter: i => i.customId === `click_${uniqueId}` || i.customId === `stop_${uniqueId}`,
+            time: 600000 
+        });
 
         collector.on('collect', async i => {
+            if (i.customId === `stop_${uniqueId}`) {
+                if (i.user.id !== interaction.user.id) {
+                    await i.reply({ content: 'Only the person who started the search can stop it.', ephemeral: true });
+                    return;
+                }
+                collector.stop('cancelled');
+                return;
+            }
+
             if (users.has(i.user.id)) {
                 counter--;
                 users.delete(i.user.id);
@@ -100,20 +116,26 @@ module.exports = {
             }
         });
 
-        collector.on('end', async collected => {
-            const disabledButton = new ButtonBuilder()
+        collector.on('end', async (collected, reason) => {
+            const disabledJoinButton = new ButtonBuilder()
                 .setCustomId(`click_${uniqueId}`)
                 .setLabel('Join/ Leave')
                 .setStyle(ButtonStyle.Primary)
                 .setDisabled(true);
 
+            const disabledStopButton = new ButtonBuilder()
+                .setCustomId(`stop_${uniqueId}`)
+                .setLabel('Stop Search')
+                .setStyle(ButtonStyle.Danger)
+                .setDisabled(true);
+
             const disabledRow = new ActionRowBuilder()
-                .addComponents(disabledButton);
+                .addComponents(disabledJoinButton, disabledStopButton);
 
             const timeOutEmbed = new EmbedBuilder()
                 .setColor(0x0099ff)
                 .setTitle(`${interaction.user.username} is looking for others to play \`${role.name}\``)
-                .setDescription('This Player search has ended');
+                .setDescription(reason === 'cancelled' ? 'This Player search was stopped' : 'This Player search has ended');
 
             await interaction.editReply({ embeds: [timeOutEmbed], components: [disabledRow] });
         });
