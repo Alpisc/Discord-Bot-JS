@@ -84,6 +84,8 @@ module.exports = {
                 if (i.user.id !== interaction.user.id) {
                     await i.reply({ content: 'Only the person who started the search can stop it.', ephemeral: true });
                     return;
+                } else {
+                    await i.reply({content: "Stopped the gamesearch.", ephemeral: true})
                 }
                 collector.stop('cancelled');
                 return;

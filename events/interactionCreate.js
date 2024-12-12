@@ -6,7 +6,7 @@ module.exports = {
     async execute(interaction) {
         // Role claim button(s)
 
-        if (interaction.isButton() && !interaction.customId.startsWith("click_")) {
+        if (interaction.isButton() && !interaction.customId.startsWith("click_") && !interaction.customId.startsWith("stop_")) {
             
             try {
                 await interaction.deferReply({ ephemeral: true });
