@@ -56,6 +56,7 @@ module.exports = {
 
         await sendReactionRole(interaction.client, roles);
 
+        await client.channels.cache.get(process.env.reactionChannelLogId).send({ content: `${interaction.user} deleted \`${name}\`` });
         await interaction.editReply({ content: `Deleted \`${roleName}\` and Updated reaction roles!` });
     }
 };

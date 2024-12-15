@@ -43,6 +43,7 @@ module.exports = {
 
         await sendReactionRole(interaction.client, roles);
 
+        await client.channels.cache.get(process.env.reactionChannelLogId).send({ content: `${interaction.user} created \`${name}\`` });
         await interaction.editReply({ content: `Created \`${name}\` and Updated reaction roles!` });
     }
 };
