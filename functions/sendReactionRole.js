@@ -4,11 +4,12 @@ async function sendReactionRole(client, roles) {
     const channel = await client.channels.cache.get(process.env.reactionChannelId);
     if (!channel) return;
 
+    const MAX_ROWS_PER_MESSAGE = 5;
     const rows = [];
     let row = new ActionRowBuilder();
 
     roles.forEach((id, index) => {
-        if (index % 5 === 0 && index !== 0) { // Every 5 entries, start a new row
+        if (index % 5 === 0 && index !== 0) {
             rows.push(row);
             row = new ActionRowBuilder();
         }
@@ -18,28 +19,32 @@ async function sendReactionRole(client, roles) {
         );
     });
 
-    rows.push(row); // Push the last row even if it's not full
+    rows.push(row);
 
-    // Fetch messages
+    const groupedRows = [];
+    for (let i = 0; i < rows.length; i += MAX_ROWS_PER_MESSAGE) {
+        groupedRows.push(rows.slice(i, i + MAX_ROWS_PER_MESSAGE));
+    }
+
     const messages = await channel.messages.fetch({ limit: 100 });
     const now = Date.now();
     const fourteenDays = 14 * 24 * 60 * 60 * 1000;
 
-    // Separate messages into those that can be bulk deleted and those that need individual deletion
     const bulkDeletableMessages = messages.filter(msg => now - msg.createdTimestamp < fourteenDays);
     const oldMessages = messages.filter(msg => now - msg.createdTimestamp >= fourteenDays);
 
-    // Bulk delete messages that are less than 14 days old
     if (bulkDeletableMessages.size > 0) {
         await channel.bulkDelete(bulkDeletableMessages);
     }
 
-    // Individually delete messages that are 14 days or older
     for (const msg of oldMessages.values()) {
         await msg.delete();
     }
 
-    await channel.send({ content: "Claim or remove a role", components: rows });
+    for (let i = 0; i < groupedRows.length; i++) {
+        const content = i === 0 ? "Claim or remove a role" : `Claim or remove a role (part ${i + 1})`;
+        await channel.send({ content, components: groupedRows[i] });
+    }
 }
 
 module.exports = sendReactionRole;
