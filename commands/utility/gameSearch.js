@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 function clearRoleName(s) {
-    return s.toLowerCase().replace(/ /g, '').replace(/./g, '');
+    return s.toLowerCase().replace(/[\s.]/g, '');
 }
 
 module.exports = {
