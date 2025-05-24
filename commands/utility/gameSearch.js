@@ -3,6 +3,10 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
 
+function clearRoleName(s){
+    return s.toLowerCase().replace(" ", "").replace(".","")
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('gamesearch')
@@ -21,7 +25,7 @@ module.exports = {
         ),
     async execute(interaction) {
         await interaction.deferReply();
-        const game = interaction.options.getString("game").toLowerCase();
+        const game = interaction.options.getString("game");
 
         let neededPlayers = Math.min(interaction.options.getInteger("amount"), interaction.guild.memberCount);
 
@@ -31,7 +35,7 @@ module.exports = {
         const rolesPath = path.join(__dirname, '..', '..', 'roles.json');
         const roles = JSON.parse(fs.readFileSync(rolesPath, 'utf8'));
 
-        let role = interaction.guild.roles.cache.find(role => role.name.toLowerCase().replace(" ", "").replace(".","") === game.replace(" ", "").replace(".",""));
+        let role = interaction.guild.roles.cache.find(role => clearRoleName(role.name) === clearRoleName(game));
         let valid;
         if (role) {
             valid = roles.some(roleId => roleId === role.id);
