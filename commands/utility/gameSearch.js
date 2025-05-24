@@ -3,8 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
 
-function clearRoleName(s){
-    return s.toLowerCase().replace(" ", "").replace(".","")
+function clearRoleName(s) {
+    return s.toLowerCase().replace(/ /g, '').replace(/./g, '');
 }
 
 module.exports = {
