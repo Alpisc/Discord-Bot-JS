@@ -31,7 +31,7 @@ module.exports = {
         const rolesPath = path.join(__dirname, '..', '..', 'roles.json');
         const roles = JSON.parse(fs.readFileSync(rolesPath, 'utf8'));
 
-        let role = interaction.guild.roles.cache.find(role => role.name.toLowerCase().replace(" ", "") === game.replace(" ", ""));
+        let role = interaction.guild.roles.cache.find(role => role.name.toLowerCase().replace(" ", "").replace(".","") === game.replace(" ", "").replace(".",""));
         let valid;
         if (role) {
             valid = roles.some(roleId => roleId === role.id);
