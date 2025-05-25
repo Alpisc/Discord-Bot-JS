@@ -31,7 +31,7 @@ module.exports = {
 			const commandName = commandNames[currentIndex];
 			client.user.setPresence({
 				activities: [{
-					name: `have you tried out \`/${commandName}?\``,
+					name: `have you tried out /${commandName} ?`,
 					type: ActivityType.Watching
 				}],
 				status: 'dnd'
