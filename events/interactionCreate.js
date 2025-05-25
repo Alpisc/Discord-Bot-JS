@@ -11,7 +11,7 @@ module.exports = {
             try {
                 await interaction.deferReply({ ephemeral: true });
             } catch (error) {
-                console.log(`Error: ${e}`)
+                console.log(`Error: ${error}`)
             }
 
             const role = interaction.guild.roles.cache.get(interaction.customId);
