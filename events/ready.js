@@ -25,29 +25,56 @@ module.exports = {
 		}
 
 		let currentIndex = 0;
-		const updatePresence = () => {
+		const updatePresence = async () => {
 			if (commandNames.length === 0) return;
-			
-			const commandName = commandNames[currentIndex];
-			try{
-				client.user.setPresence({
-					activities: [{
-						name: `have you tried out /${commandName} ?`,
-						type: ActivityType.Playing
-					}],
-					status: 'dnd'
-				})
-			} catch(error) {
-				console.error(error)
+
+			const useCommand = Math.random() < 0.3;
+
+			try {
+				if (useCommand) {
+					const commandName = commandNames[currentIndex];
+					client.user.setPresence({
+						activities: [{
+							name: `have you tried out /${commandName} ?`,
+							type: ActivityType.Playing
+						}],
+						status: 'dnd'
+					});
+					currentIndex = (currentIndex + 1) % commandNames.length;
+				} else {
+					const guild = client.guilds.cache.first();
+					if (!guild) {
+						console.log('No guild available for member status');
+						return;
+					}
+
+					await guild.members.fetch();
+					const members = guild.members.cache.filter(member => !member.user.bot);
+					if (members.size === 0) {
+						console.log('No members found in the guild');
+						return;
+					}
+
+					const randomMember = members.random();
+					client.user.setPresence({
+						activities: [{
+							name: `${randomMember.user.username}`,
+							type: ActivityType.Watching
+						}],
+						status: 'dnd'
+					});
+				}
+			} catch (error) {
+				console.error('Error updating presence:', error);
 			}
-			
-			currentIndex = (currentIndex + 1) % commandNames.length;
 		};
 
 		if (commandNames.length > 0) {
-			updatePresence();
+			updatePresence().catch(error => console.error('Initial presence update error:', error));
 			const intervalTime = 60 * cycleMinutes * 1000;
-			setInterval(updatePresence, intervalTime);
+			setInterval(() => {
+				updatePresence().catch(error => console.error('Interval presence update error:', error));
+			}, intervalTime);
 			console.log(`[Status Cycle] Cycling every ${cycleMinutes} minutes`);
 		}
 
