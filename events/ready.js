@@ -29,13 +29,17 @@ module.exports = {
 			if (commandNames.length === 0) return;
 			
 			const commandName = commandNames[currentIndex];
-			client.user.setPresence({
-				activities: [{
-					name: `have you tried out /${commandName} ?`,
-					type: ActivityType.Watching
-				}],
-				status: 'dnd'
-			}).catch(console.error);
+			try{
+				client.user.setPresence({
+					activities: [{
+						name: `have you tried out /${commandName} ?`,
+						type: ActivityType.Watching
+					}],
+					status: 'dnd'
+				})
+			} catch(error) {
+				console.error(error)
+			}
 			
 			currentIndex = (currentIndex + 1) % commandNames.length;
 		};
