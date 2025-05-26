@@ -50,7 +50,6 @@ module.exports = {
             return;
         }
 
-        // first player is being added
         counter++;
         users.add(interaction.user.id);
 

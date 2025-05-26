@@ -21,7 +21,6 @@ module.exports = {
 			
 			console.log(`[Status Cycle] Found ${commandNames.length} commands to cycle through`);
 			
-			// Shuffle commands array on startup
 			commandNames = commandNames.sort(() => Math.random() - 0.5);
 		} catch (error) {
 			console.error('Could not read utility commands directory:', error);
@@ -45,7 +44,6 @@ module.exports = {
 					});
 					currentIndex = (currentIndex + 1) % commandNames.length;
 					
-					// Reshuffle commands when we reach the end
 					if (currentIndex === 0) {
 						commandNames = commandNames.sort(() => Math.random() - 0.5);
 					}
