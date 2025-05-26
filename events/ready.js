@@ -33,7 +33,7 @@ module.exports = {
 				client.user.setPresence({
 					activities: [{
 						name: `have you tried out /${commandName} ?`,
-						type: ActivityType.Watching
+						type: ActivityType.Playing
 					}],
 					status: 'dnd'
 				})
