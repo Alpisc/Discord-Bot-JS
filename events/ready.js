@@ -28,7 +28,7 @@ module.exports = {
 		const updatePresence = async () => {
 			if (commandNames.length === 0) return;
 
-			const useCommand = Math.random() < 0.3;
+			const useCommand = Math.random() < 0.7;
 
 			try {
 				if (useCommand) {
