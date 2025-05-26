@@ -45,24 +45,36 @@ module.exports = {
 					const guild = client.guilds.cache.first();
 					if (!guild) {
 						console.log('No guild available for member status');
-						return;
+						return this.execute(client);
 					}
 
-					await guild.members.fetch();
-					const members = guild.members.cache.filter(member => !member.user.bot);
-					if (members.size === 0) {
-						console.log('No members found in the guild');
-						return;
-					}
+					await guild.members.fetch({ withPresences: true });
+					const onlineMembers = guild.members.cache.filter(member => 
+						!member.user.bot &&
+						member.user.id !== client.user.id &&
+						member.presence?.status !== 'offline'
+					);
 
-					const randomMember = members.random();
-					client.user.setPresence({
-						activities: [{
-							name: `${randomMember.user.username}`,
-							type: ActivityType.Watching
-						}],
-						status: 'dnd'
-					});
+					if (onlineMembers.size === 0) {
+						const commandName = commandNames[currentIndex];
+						client.user.setPresence({
+							activities: [{
+								name: `have you tried out /${commandName} ?`,
+								type: ActivityType.Playing
+							}],
+							status: 'dnd'
+						});
+						currentIndex = (currentIndex + 1) % commandNames.length;
+					} else {
+						const randomMember = onlineMembers.random();
+						client.user.setPresence({
+							activities: [{
+								name: `${randomMember.user.username}`,
+								type: ActivityType.Watching
+							}],
+							status: 'dnd'
+						});
+					}
 				}
 			} catch (error) {
 				console.error('Error updating presence:', error);
