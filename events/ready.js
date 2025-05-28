@@ -58,7 +58,7 @@ module.exports = {
 					const onlineMembers = guild.members.cache.filter(member => 
 						!member.user.bot &&
 						member.user.id !== client.user.id &&
-						member.presence?.status !== 'offline'
+						(member.presence?.status == 'online' || member.presence?.status == 'idle' || member.presence?.status == 'dnd')
 					);
 
 					if (onlineMembers.size === 0) {
