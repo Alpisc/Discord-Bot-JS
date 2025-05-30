@@ -75,7 +75,7 @@ module.exports = {
 						const randomMember = onlineMembers.random();
 						client.user.setPresence({
 							activities: [{
-								name: `${randomMember.user.username}`,
+								name: `${randomMember.displayName}`,
 								type: ActivityType.Watching
 							}],
 							status: 'dnd'
