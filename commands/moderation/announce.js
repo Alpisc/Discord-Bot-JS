@@ -9,7 +9,8 @@ module.exports = {
             .setName("announcement")
             .setDescription("The announcement you want to send")
             .setRequired(true)
-        ),
+        )
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
         const announcement = interaction.options.getString("announcement");
 
